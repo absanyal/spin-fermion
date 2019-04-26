@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
 
     // std::ofstream outfile;
 
-    outfile.open(std::to_string(nx) + '_' + std::to_string(ny) + "_dos.dat");
+     outfile.open(std::to_string(d_theta_x)+"_"+std::to_string(d_theta_y)+"_"+std::to_string(nx) + '_' + std::to_string(ny) + "_dos.dat");
 
     int counter = 0;
     for (int xi = 0; xi <= numw; xi++)
