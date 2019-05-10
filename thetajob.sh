@@ -13,7 +13,7 @@ do
         echo "#PBS -e error.log" >> $sub
         echo "#PBS -o out.log" >> $sub
         echo 'cd $PBS_O_WORKDIR' >> $sub
-        echo "time ./sf_thetascan.out 16 16 ${J} 100 ${fill}" >> outp$
+        echo "time ./sf_thetascan.out 16 16 ${J} 100 ${fill}" >> output_${J}_${fill}
         qsub $sub
         cd ../
     done
