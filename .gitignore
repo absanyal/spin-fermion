@@ -1,6 +1,6 @@
 *
-**/*
 !.gitignore
+!Monte_carlo_1orbital/
 !*.cpp
 !*.hpp
 !*.h
