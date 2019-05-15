@@ -1,6 +1,9 @@
 *
 !src/
+!inputs/
 !.gitignore
 !*.cpp
 !*.h
 !*.hpp
+!Makefile*
+!*.inp
