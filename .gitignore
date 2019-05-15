@@ -1,6 +1,7 @@
 *
 !.gitignore
 !**/Monte_carlo_1orbital/
+!**/sf_phasespace_testing/
 !*.cpp
 !*.hpp
 !*.h
