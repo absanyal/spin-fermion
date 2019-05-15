@@ -113,16 +113,16 @@ void MCEngine::RUN_MC()
         File_Out_local_density = "local_density" + string(temp_char) + ".txt";
         ofstream File_Out_Local_Density(File_Out_local_density.c_str());
 
-        File_Out_real_space_corr = "real_space_corr" + string(temp_char) + ".txt";
+        File_Out_real_space_corr = "classical_real_space_corr" + string(temp_char) + ".txt";
         ofstream File_Out_Real_Space_Corr(File_Out_real_space_corr.c_str());
 
-        File_Out_q_space_corr = "q_space_corr" + string(temp_char) + ".txt";
+        File_Out_q_space_corr = "classical_momentum_space_corr" + string(temp_char) + ".txt";
         ofstream File_Out_Q_Space_Corr(File_Out_q_space_corr.c_str());
 
         File_Out_quantum_real_space_corr = "quantum_real_space_corr" + string(temp_char) + ".txt";
         ofstream File_Out_Quantum_Real_Space_Corr(File_Out_quantum_real_space_corr.c_str());
 
-        File_Out_quantum_q_space_corr = "quantum_q_space_corr" + string(temp_char) + ".txt";
+        File_Out_quantum_q_space_corr = "quantum_momentum_space_corr" + string(temp_char) + ".txt";
         ofstream File_Out_Quantum_Q_Space_Corr(File_Out_quantum_q_space_corr.c_str());
 
         
