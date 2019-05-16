@@ -263,7 +263,7 @@ void MCEngine::RUN_MC()
                   */
 
                     //same mu-refrence is used, otherwise engine does not work properly
-                    P_new = ProbCluster(muu_prev, muu_prev);
+                    P_new = ProbCluster(Parameters_.mus_Cluster, Parameters_.mus_Cluster);
                     P12 = P_new - Parameters_.beta * ((CurrE) - (PrevE));
                     //P12 = - Parameters_.beta*((CurrE)-(PrevE));
                     //cout<<P12<<endl;
