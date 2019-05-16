@@ -125,8 +125,6 @@ void MCEngine::RUN_MC()
         File_Out_quantum_q_space_corr = "quantum_momentum_space_corr" + string(temp_char) + ".txt";
         ofstream File_Out_Quantum_Q_Space_Corr(File_Out_quantum_q_space_corr.c_str());
 
-        
-
         file_out_progress << "Total " << Parameters_.IterMax << " sweeps are performed." << endl;
         file_out_progress << "First " << Parameters_.IterMax - (Gap_bw_sweeps * (MC_sweeps_used_for_Avg - 1) + MC_sweeps_used_for_Avg) << " sweeps are used for thermalization and every " << Gap_bw_sweeps + 1 << " in last " << Gap_bw_sweeps * (MC_sweeps_used_for_Avg - 1) + MC_sweeps_used_for_Avg << " sweeps are used for measurement." << endl;
         act = 1;
@@ -508,12 +506,12 @@ void MCEngine::RUN_MC()
             {
                 temp_site_ = Coordinates_.Nc(ix, iy);
                 File_Out_Local_Density << ix << setw(15) << iy << setw(15) << temp_site_ << setw(15) << Observables_.local_density_Mean[temp_site_][0] / (Confs_used * 1.0) << setw(15) << sqrt(((Observables_.local_density_square_Mean[temp_site_][0] / (Confs_used * 1.0)) - ((Observables_.local_density_Mean[temp_site_][0] * Observables_.local_density_Mean[temp_site_][0]) / (Confs_used * Confs_used * 1.0))))
-                                       << setw(15) << Observables_.local_density_Mean[temp_site_][1] / (Confs_used * 1.0) << setw(15) << sqrt(((Observables_.local_density_square_Mean[temp_site_][1] / (Confs_used * 1.0)) - ((Observables_.local_density_Mean[temp_site_][1] * Observables_.local_density_Mean[temp_site_][1]) / (Confs_used * Confs_used * 1.0))))<<endl;
+                                       << setw(15) << Observables_.local_density_Mean[temp_site_][1] / (Confs_used * 1.0) << setw(15) << sqrt(((Observables_.local_density_square_Mean[temp_site_][1] / (Confs_used * 1.0)) - ((Observables_.local_density_Mean[temp_site_][1] * Observables_.local_density_Mean[temp_site_][1]) / (Confs_used * Confs_used * 1.0)))) << endl;
             }
             File_Out_Local_Density << endl;
         }
 
-        File_Out_Real_Space_Corr << "rx" << setw(15) << "ry"  << setw(15) << "<SS(rx,ry)>" << setw(15) << "sd(SS(rx,ry))"<< endl;
+        File_Out_Real_Space_Corr << "rx" << setw(15) << "ry" << setw(15) << "<SS(rx,ry)>" << setw(15) << "sd(SS(rx,ry))" << endl;
         // int temp_site_;
         for (int ix = 0; ix < lx_; ix++)
         {
@@ -521,25 +519,25 @@ void MCEngine::RUN_MC()
             {
                 temp_site_ = Coordinates_.Nc(ix, iy);
                 File_Out_Real_Space_Corr << ix << setw(15) << iy << setw(15) << Observables_.SiSj_Mean(ix, iy) / (Confs_used * 1.0)
-                                      << setw(15) << sqrt(((Observables_.SiSj_square_Mean(ix, iy) / (Confs_used * 1.0)) - ((Observables_.SiSj_Mean(ix, iy) * Observables_.SiSj_Mean(ix, iy)) / (Confs_used * Confs_used * 1.0))))<<endl;
+                                         << setw(15) << sqrt(((Observables_.SiSj_square_Mean(ix, iy) / (Confs_used * 1.0)) - ((Observables_.SiSj_Mean(ix, iy) * Observables_.SiSj_Mean(ix, iy)) / (Confs_used * Confs_used * 1.0)))) << endl;
             }
             File_Out_Real_Space_Corr << endl;
         }
 
-        File_Out_Quantum_Real_Space_Corr << "rx" << setw(15) << "ry" << setw(15) << "<qSS(rx,ry)>" << setw(15) << "sd(qSS(rx,ry))"<< endl;
+        File_Out_Quantum_Real_Space_Corr << "rx" << setw(15) << "ry" << setw(15) << "<qSS(rx,ry)>" << setw(15) << "sd(qSS(rx,ry))" << endl;
         // int temp_site_;
         for (int ix = 0; ix < lx_; ix++)
         {
             for (int iy = 0; iy < ly_; iy++)
             {
                 temp_site_ = Coordinates_.Nc(ix, iy);
-                File_Out_Quantum_Real_Space_Corr << ix << setw(15) << iy<< setw(15) << Observables_.quantum_SiSj_Mean_(ix, iy).real() / (Confs_used * 1.0)
-                                      << setw(15) << sqrt(((Observables_.quantum_SiSj_square_Mean_(ix, iy).real() / (Confs_used * 1.0)) - ((Observables_.quantum_SiSj_Mean_(ix, iy) * Observables_.quantum_SiSj_Mean_(ix, iy)).real() / (Confs_used * Confs_used * 1.0))))<<endl;
+                File_Out_Quantum_Real_Space_Corr << ix << setw(15) << iy << setw(15) << Observables_.quantum_SiSj_Mean_(ix, iy).real() / (Confs_used * 1.0)
+                                                 << setw(15) << sqrt(((Observables_.quantum_SiSj_square_Mean_(ix, iy).real() / (Confs_used * 1.0)) - ((Observables_.quantum_SiSj_Mean_(ix, iy) * Observables_.quantum_SiSj_Mean_(ix, iy)).real() / (Confs_used * Confs_used * 1.0)))) << endl;
             }
             File_Out_Quantum_Real_Space_Corr << endl;
         }
 
-        File_Out_Q_Space_Corr << "qx" << setw(15) << "qy"  << setw(15) << "<SSQ(qx,qy)>" << setw(15) << "sd(SSQ(qx,qy))"<< endl;
+        File_Out_Q_Space_Corr << "qx" << setw(15) << "qy" << setw(15) << "<SSQ(qx,qy)>" << setw(15) << "sd(SSQ(qx,qy))" << endl;
         // int temp_site_;
         double qx, qy;
         for (int ix = 0; ix < lx_; ix++)
@@ -551,12 +549,12 @@ void MCEngine::RUN_MC()
 
                 temp_site_ = Coordinates_.Nc(ix, iy);
                 File_Out_Q_Space_Corr << qx << setw(15) << qy << setw(15) << Observables_.SiSjQ_Mean(ix, iy).real() / (Confs_used * 1.0)
-                                      << setw(15) << sqrt(((Observables_.SiSjQ_square_Mean(ix, iy).real() / (Confs_used * 1.0)) - ((Observables_.SiSjQ_Mean(ix, iy) * Observables_.SiSjQ_Mean(ix, iy)).real() / (Confs_used * Confs_used * 1.0))))<<endl;
+                                      << setw(15) << sqrt(((Observables_.SiSjQ_square_Mean(ix, iy).real() / (Confs_used * 1.0)) - ((Observables_.SiSjQ_Mean(ix, iy) * Observables_.SiSjQ_Mean(ix, iy)).real() / (Confs_used * Confs_used * 1.0)))) << endl;
             }
             File_Out_Q_Space_Corr << endl;
         }
 
-        File_Out_Quantum_Q_Space_Corr << "qx" << setw(15) << "qy"  << setw(15) << "<QSSQ(qx,qy)>" << setw(15) << "sd(QSSQ(qx,qy))"<< endl;
+        File_Out_Quantum_Q_Space_Corr << "qx" << setw(15) << "qy" << setw(15) << "<QSSQ(qx,qy)>" << setw(15) << "sd(QSSQ(qx,qy))" << endl;
         // int temp_site_;
         // double qx, qy;
         for (int ix = 0; ix < lx_; ix++)
@@ -568,12 +566,14 @@ void MCEngine::RUN_MC()
 
                 temp_site_ = Coordinates_.Nc(ix, iy);
                 File_Out_Quantum_Q_Space_Corr << qx << setw(15) << qy << setw(15) << Observables_.quantum_SiSjQ_Mean_(ix, iy).real() / (Confs_used * 1.0)
-                                      << setw(15) << sqrt(((Observables_.quantum_SiSjQ_square_Mean_(ix, iy).real() / (Confs_used * 1.0)) - ((Observables_.quantum_SiSjQ_Mean_(ix, iy) * Observables_.quantum_SiSjQ_Mean_(ix, iy)).real() / (Confs_used * Confs_used * 1.0))))<<endl;
+                                              << setw(15) << sqrt(((Observables_.quantum_SiSjQ_square_Mean_(ix, iy).real() / (Confs_used * 1.0)) - ((Observables_.quantum_SiSjQ_Mean_(ix, iy) * Observables_.quantum_SiSjQ_Mean_(ix, iy)).real() / (Confs_used * Confs_used * 1.0)))) << endl;
             }
             File_Out_Quantum_Q_Space_Corr << endl;
         }
 
-        MFParams_.Read_classical_DOFs(File_Out_theta_phi);
+        string File_Out_theta_phi_microState0_toread = "ThetaPhi_Temp" + string(temp_char) +
+                                                       "MicroState0.txt";
+        MFParams_.Read_classical_DOFs(File_Out_theta_phi_microState0_toread);
     } //Temperature loop
 
 } // ---------
