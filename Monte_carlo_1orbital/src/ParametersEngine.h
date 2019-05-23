@@ -31,6 +31,10 @@ public:
 
     bool MC_on_theta, MC_on_phi, MC_on_moment_size, MC_on_local_density;
 
+    bool fix_mu;
+
+    double fixed_mu_value;
+
     /*
 SavingMicroscopicStates=1
 NoOfMicroscopicStates=50
@@ -122,6 +126,8 @@ void Parameters::Initialize(string inputfile_)
     lx_cluster = int(matchstring(inputfile_, "Cluster_lx"));
     ly_cluster = int(matchstring(inputfile_, "Cluster_ly"));
     SavingMicroscopicStates_int = int(matchstring(inputfile_, "SavingMicroscopicStates"));
+    fix_mu = matchstring(inputfile_, "Fix_mu");
+    fixed_mu_value = double(matchstring(inputfile_, "fixed_mu_value")) * 1.0;
 
     assert(SavingMicroscopicStates_int == 1 ||
            SavingMicroscopicStates_int == 0);

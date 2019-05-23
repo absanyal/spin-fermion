@@ -76,89 +76,99 @@ double Hamiltonian::chemicalpotential(double muin, double filling)
     mu_out = muin;
     bool converged = false;
 
-    if (1 == 2)
+    if (!Parameters_.fix_mu)
     {
-        for (int i = 0; i < 100000; i++)
-        {
-            n1 = 0.0;
-            for (int j = 0; j < nstate; j++)
-            {
-                n1 += double(1.0 / (exp((eigs_[j] - mu_out) * Parameters_.beta) + 1.0));
-            }
-            //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
-            if (abs(N - n1) < double(0.0001))
-            {
-                //cout<<abs(N-n1)<<endl;
-                converged = true;
-                break;
-            }
-            else
-            {
-                mu_out += (N - n1) * dMubydN;
-                //cout<<i<<"    "<<n1<<"    "<<N-n1<<endl;
-            }
-        }
+        assert(!Parameters_.fix_mu);
 
-        if (!converged)
+        if (1 == 2)
         {
-            cout<<"mu_not_converged, N = "<<n1<<endl;
-        }
-        else
-        {
-            //cout<<"mu converged, N = "<<n1<<endl;
-        }
-    }
-
-    double mu1, mu2;
-    double mu_temp = muin;
-    //cout<<"mu_input = "<<mu_temp<<endl;
-    if (1 == 1)
-    {
-        mu1 = eigs_[0];
-        mu2 = eigs_[nstate - 1];
-        for (int i = 0; i < 40000; i++)
-        {
-            n1 = 0.0;
-            for (int j = 0; j < nstate; j++)
+            for (int i = 0; i < 100000; i++)
             {
-                n1 += double(1.0 / (exp((eigs_[j] - mu_temp) * Parameters_.beta) + 1.0));
-            }
-            //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
-            if (abs(N - n1) < double(0.0001))
-            {
-                //cout<<abs(N-n1)<<endl;
-                converged = true;
-                break;
-            }
-            else
-            {
-                if (n1 > N)
+                n1 = 0.0;
+                for (int j = 0; j < nstate; j++)
                 {
-                    mu2 = mu_temp;
-                    mu_temp = 0.5 * (mu1 + mu_temp);
+                    n1 += double(1.0 / (exp((eigs_[j] - mu_out) * Parameters_.beta) + 1.0));
+                }
+                //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
+                if (abs(N - n1) < double(0.0001))
+                {
+                    //cout<<abs(N-n1)<<endl;
+                    converged = true;
+                    break;
                 }
                 else
                 {
-                    mu1 = mu_temp;
-                    mu_temp = 0.5 * (mu2 + mu_temp);
+                    mu_out += (N - n1) * dMubydN;
+                    //cout<<i<<"    "<<n1<<"    "<<N-n1<<endl;
                 }
             }
-            //cout<<"mu_temp = "<<mu_temp<<"   "<<n1<<endl;
+
+            if (!converged)
+            {
+                cout << "mu_not_converged, N = " << n1 << endl;
+            }
+            else
+            {
+                //cout<<"mu converged, N = "<<n1<<endl;
+            }
         }
 
-        if (!converged)
+        double mu1, mu2;
+        double mu_temp = muin;
+        //cout<<"mu_input = "<<mu_temp<<endl;
+        if (1 == 1)
         {
-            cout<<"mu_not_converged, N = "<<n1<<endl;
-        }
-        else
-        {
-            //cout<<"mu converged, N = "<<n1<<endl;
+            mu1 = eigs_[0];
+            mu2 = eigs_[nstate - 1];
+            for (int i = 0; i < 40000; i++)
+            {
+                n1 = 0.0;
+                for (int j = 0; j < nstate; j++)
+                {
+                    n1 += double(1.0 / (exp((eigs_[j] - mu_temp) * Parameters_.beta) + 1.0));
+                }
+                //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
+                if (abs(N - n1) < double(0.0001))
+                {
+                    //cout<<abs(N-n1)<<endl;
+                    converged = true;
+                    break;
+                }
+                else
+                {
+                    if (n1 > N)
+                    {
+                        mu2 = mu_temp;
+                        mu_temp = 0.5 * (mu1 + mu_temp);
+                    }
+                    else
+                    {
+                        mu1 = mu_temp;
+                        mu_temp = 0.5 * (mu2 + mu_temp);
+                    }
+                }
+                //cout<<"mu_temp = "<<mu_temp<<"   "<<n1<<endl;
+            }
+
+            if (!converged)
+            {
+                cout << "mu_not_converged, N = " << n1 << endl;
+            }
+            else
+            {
+                //cout<<"mu converged, N = "<<n1<<endl;
+            }
+
+            mu_out = mu_temp;
         }
 
-        mu_out = mu_temp;
+        return mu_out;
     }
-
-    return mu_out;
+    else
+    {
+        assert(Parameters_.fix_mu);
+        return Parameters_.fixed_mu_value;
+    }
 } // ----------
 
 double Hamiltonian::chemicalpotentialCluster(double muin, double filling)
@@ -173,89 +183,98 @@ double Hamiltonian::chemicalpotentialCluster(double muin, double filling)
     mu_out = muin;
     bool converged = false;
 
-    if (1 == 2)
+    if (!Parameters_.fix_mu)
     {
-        for (int i = 0; i < 100000; i++)
+        assert(!Parameters_.fix_mu);
+        if (1 == 2)
         {
-            n1 = 0.0;
-            for (int j = 0; j < nstate; j++)
+            for (int i = 0; i < 100000; i++)
             {
-                n1 += double(1.0 / (exp((eigsCluster_[j] - mu_out) * Parameters_.beta) + 1.0));
-            }
-            //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
-            if (abs(N - n1) < double(0.0001))
-            {
-                //cout<<abs(N-n1)<<endl;
-                converged = true;
-                break;
-            }
-            else
-            {
-                mu_out += (N - n1) * dMubydN;
-                //cout<<i<<"    "<<n1<<"    "<<N-n1<<endl;
-            }
-        }
-
-        if (!converged)
-        {
-            cout<<"mu_not_converged, N = "<<n1<<endl;
-        }
-        else
-        {
-            //cout<<"mu converged, N = "<<n1<<endl;
-        }
-    }
-
-    double mu1, mu2;
-    double mu_temp = muin;
-    //cout<<"mu_input = "<<mu_temp<<endl;
-    if (1 == 1)
-    {
-        mu1 = eigsCluster_[0];
-        mu2 = eigsCluster_[nstate - 1];
-        for (int i = 0; i < 40000; i++)
-        {
-            n1 = 0.0;
-            for (int j = 0; j < nstate; j++)
-            {
-                n1 += double(1.0 / (exp((eigsCluster_[j] - mu_temp) * Parameters_.beta) + 1.0));
-            }
-            //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
-            if (abs(N - n1) < double(0.0001))
-            {
-                //cout<<abs(N-n1)<<endl;
-                converged = true;
-                break;
-            }
-            else
-            {
-                if (n1 > N)
+                n1 = 0.0;
+                for (int j = 0; j < nstate; j++)
                 {
-                    mu2 = mu_temp;
-                    mu_temp = 0.5 * (mu1 + mu_temp);
+                    n1 += double(1.0 / (exp((eigsCluster_[j] - mu_out) * Parameters_.beta) + 1.0));
+                }
+                //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
+                if (abs(N - n1) < double(0.0001))
+                {
+                    //cout<<abs(N-n1)<<endl;
+                    converged = true;
+                    break;
                 }
                 else
                 {
-                    mu1 = mu_temp;
-                    mu_temp = 0.5 * (mu2 + mu_temp);
+                    mu_out += (N - n1) * dMubydN;
+                    //cout<<i<<"    "<<n1<<"    "<<N-n1<<endl;
                 }
             }
-            //cout<<"mu_temp = "<<mu_temp<<"   "<<n1<<endl;
+
+            if (!converged)
+            {
+                cout << "mu_not_converged, N = " << n1 << endl;
+            }
+            else
+            {
+                //cout<<"mu converged, N = "<<n1<<endl;
+            }
         }
 
-        if (!converged)
+        double mu1, mu2;
+        double mu_temp = muin;
+        //cout<<"mu_input = "<<mu_temp<<endl;
+        if (1 == 1)
         {
-            cout<<"mu_not_converged, N = "<<n1<<endl;
-        }
-        else
-        {
-            //cout<<"mu converged, N = "<<n1<<endl;
+            mu1 = eigsCluster_[0];
+            mu2 = eigsCluster_[nstate - 1];
+            for (int i = 0; i < 40000; i++)
+            {
+                n1 = 0.0;
+                for (int j = 0; j < nstate; j++)
+                {
+                    n1 += double(1.0 / (exp((eigsCluster_[j] - mu_temp) * Parameters_.beta) + 1.0));
+                }
+                //cout <<"i  "<< i << "  n1  " << n1 << "  mu  " << mu_out<< endl;
+                if (abs(N - n1) < double(0.0001))
+                {
+                    //cout<<abs(N-n1)<<endl;
+                    converged = true;
+                    break;
+                }
+                else
+                {
+                    if (n1 > N)
+                    {
+                        mu2 = mu_temp;
+                        mu_temp = 0.5 * (mu1 + mu_temp);
+                    }
+                    else
+                    {
+                        mu1 = mu_temp;
+                        mu_temp = 0.5 * (mu2 + mu_temp);
+                    }
+                }
+                //cout<<"mu_temp = "<<mu_temp<<"   "<<n1<<endl;
+            }
+
+            if (!converged)
+            {
+                cout << "mu_not_converged, N = " << n1 << endl;
+            }
+            else
+            {
+                //cout<<"mu converged, N = "<<n1<<endl;
+            }
+
+            mu_out = mu_temp;
         }
 
-        mu_out = mu_temp;
+        return mu_out;
     }
-
-    return mu_out;
+    else
+    {
+        assert(Parameters_.fix_mu);
+        return Parameters_.fixed_mu_value;
+    }
 } // ----------
 
 void Hamiltonian::Initialize()
@@ -295,7 +314,7 @@ double Hamiltonian::TotalDensity()
     double n1 = 0.0;
     for (int j = 0; j < eigs_.size(); j++)
     {
-        n1 += 1.0f / (exp(Parameters_.beta * (eigs_[j] - Parameters_.mus)) + 1.0);
+        n1 += 1.0 / (exp(Parameters_.beta * (eigs_[j] - Parameters_.mus * 1.0)) + 1.0);
     }
     return n1;
 } // ----------
@@ -305,8 +324,9 @@ double Hamiltonian::ClusterDensity()
     double n1 = 0.0;
     for (int j = 0; j < eigsCluster_.size(); j++)
     {
-        n1 += 1.0f / (exp(Parameters_.beta * (eigsCluster_[j] - Parameters_.mus_Cluster)) + 1.0);
+        n1 += 1.0 / (exp(Parameters_.beta * (eigsCluster_[j] - Parameters_.mus_Cluster * 1.0)) + 1.0);
     }
+    cout << Parameters_.beta << endl;
     return n1;
 } // ----------
 
@@ -390,6 +410,15 @@ void Hamiltonian::InteractionsCreate()
     int a;
     double ei, ai;
     double den;
+    double fix_mu_double;
+    if (Parameters_.fix_mu)
+    {
+        fix_mu_double = 1.0;
+    }
+    else
+    {
+        fix_mu_double = 0.0;
+    }
 
     Ham_ = HTB_;
     // Ham_.print();
@@ -400,7 +429,7 @@ void Hamiltonian::InteractionsCreate()
         ai = MFParams_.ephi(Coordinates_.indx(i), Coordinates_.indy(i));
         den = MFParams_.Local_density(Coordinates_.indx(i), Coordinates_.indy(i));
 
-        Ham_(i, i) += HS_factor * (-0.25) * Parameters_.J_Hund * (den);
+        Ham_(i, i) += HS_factor * (-0.25) * Parameters_.J_Hund * (den) - Parameters_.fix_mu * fix_mu_double;
         Ham_(i + ns_, i + ns_) += HS_factor * (-0.25) * Parameters_.J_Hund * (den);
         Ham_(i, i) += Parameters_.J_Hund * (cos(ei)) * 0.5 * MFParams_.Moment_Size(Coordinates_.indx(i), Coordinates_.indy(i));
         Ham_(i + ns_, i + ns_) += Parameters_.J_Hund * (-cos(ei)) * 0.5 * MFParams_.Moment_Size(Coordinates_.indx(i), Coordinates_.indy(i));
