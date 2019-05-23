@@ -14,6 +14,8 @@ public:
     double J_Hund, K1x, K1y;
     double k_const;
     double Disorder_Strength, RandomDisorderSeed;
+    bool Read_Seed_from_file_;
+    string Seed_file_name_;
 
     double t_hopping;
 
@@ -59,6 +61,7 @@ void Parameters::Initialize(string inputfile_)
     t_hopping = 1.0;
     string monte_carlo_variables_;
     double cooling_double;
+    double Read_Seed_from_file_double;
     double metropolis_double;
     double Perform_HF_SC_calculation_double;
     double Simple_Mixing_double;
@@ -147,7 +150,7 @@ void Parameters::Initialize(string inputfile_)
     J_Hund = matchstring(inputfile_, "J_Hund");
     K1x = matchstring(inputfile_, "K");
     K1y = K1x;
-    cout<<"K1x= " << K1x<<endl;
+    cout << "K1x= " << K1x << endl;
 
     Dflag = 'N';
 
@@ -232,6 +235,23 @@ void Parameters::Initialize(string inputfile_)
         cout << "ERROR: Perform_ED can be only 1 (true) or 0 (false)" << endl;
         assert(ED_double == 0.0);
     }
+
+    Read_Seed_from_file_double = double(matchstring(inputfile_, "Read_Seed_from_file"));
+    if (Read_Seed_from_file_double == 1.0)
+    {
+        Read_Seed_from_file_ = true;
+    }
+    else if (Read_Seed_from_file_double == 0.0)
+    {
+        Read_Seed_from_file_ = false;
+    }
+    else
+    {
+        cout << "ERROR:Read_Seed_from_file can be only 1 (true) or 0 (false)" << endl;
+        assert(Read_Seed_from_file_double == 0.0);
+    }
+
+    Seed_file_name_ = matchstring2(inputfile_, "Seed_file_name");
 
     Last_n_sweeps_for_measurement = int(matchstring(inputfile_, "Last_n_sweeps_for_measurement"));
     Measurement_after_each_m_sweeps = int(matchstring(inputfile_, "Measurement_after_each_m_sweeps"));
