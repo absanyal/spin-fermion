@@ -14,6 +14,7 @@ public:
     double J_Hund, K1x, K1y;
     double k_const;
     double Disorder_Strength, RandomDisorderSeed;
+    double Boltzman_constant;
     bool Read_Seed_from_file_;
     string Seed_file_name_;
 
@@ -153,6 +154,7 @@ void Parameters::Initialize(string inputfile_)
     RandomSeed = matchstring(inputfile_, "RandomSeed");
     RandomDisorderSeed = matchstring(inputfile_, "RandomDisorderSeed");
     Disorder_Strength = matchstring(inputfile_, "Disorder_Strength");
+    Boltzman_constant = matchstring(inputfile_, "Boltzman_constant");
     J_Hund = matchstring(inputfile_, "J_Hund");
     K1x = matchstring(inputfile_, "K");
     K1y = K1x;
@@ -205,15 +207,15 @@ void Parameters::Initialize(string inputfile_)
         temp_min = double(matchstring(inputfile_, "Temperature_min"));
         temp_max = double(matchstring(inputfile_, "Temperature_max"));
         d_Temp = double(matchstring(inputfile_, "dTemperature"));
-        beta_max = double(11604.0 / temp_min);
-        beta_min = double(11604.0 / temp_max);
+        beta_max = double(Boltzman_constant / temp_min);
+        beta_min = double(Boltzman_constant / temp_max);
     }
     else if (cooling_double == 0.0)
     {
         Cooling_ = false;
 
         temp = double(matchstring(inputfile_, "Temperature")); // temperature in kelvin
-        beta = double(11604.0 / temp);                         //Beta which is (T*k_b)^-1
+        beta = double(Boltzman_constant / temp);                         //Beta which is (T*k_b)^-1
 
         temp_min = temp;
         temp_max = temp;

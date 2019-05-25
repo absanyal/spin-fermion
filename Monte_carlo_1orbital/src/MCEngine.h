@@ -81,7 +81,7 @@ void MCEngine::RUN_MC()
 
         cout << "Temperature = " << temp_ << " is being done" << endl;
         Parameters_.temp = temp_;
-        Parameters_.beta = double(11604.0 / temp_);
+        Parameters_.beta = double(Parameters_.Boltzman_constant/ temp_);
 
         for (int ix = 0; ix < lx_; ix++)
         {
@@ -102,7 +102,7 @@ void MCEngine::RUN_MC()
         MFParams_.ephi_avg.fill(0.0);
 
         char temp_char[50];
-        sprintf(temp_char, "%.1f", temp_);
+        sprintf(temp_char, "%.4f", temp_);
 
         File_Out_progress = "output_Temp" + string(temp_char) + ".txt";
         ofstream file_out_progress(File_Out_progress.c_str());
@@ -389,7 +389,7 @@ void MCEngine::RUN_MC()
                     measure_start++;
                     cout << "----------Measurement is started----------" << endl;
                     file_out_progress << "----------Measurement is started----------" << endl;
-                    file_out_progress << "I_MC      Avg{S(pi,0)}    Avg{S(0,pi)}    std.dev{S(pi,0)}   std.dev{S(0,pi)}    Avg{q_S(pi,0)}    Avg{q_S(0,pi)}    std.dev{q_S(pi,0)}   std.dev{q_S(0,pi)}  Avg{S(1,0)}  Avg{S(0,1)}  std.dev{S(1,0)}  std.dev{S(0,1)}   Avg{E_classical}  std.dev{E_classical}" << endl;
+                    file_out_progress << "I_MC      Avg{S(pi,0)}    Avg{S(0,pi)}    std.dev{S(pi,0)}   std.dev{S(0,pi)}    Avg{q_S(pi,0)}    Avg{q_S(0,pi)}    std.dev{q_S(pi,0)}   std.dev{q_S(0,pi)}  Avg{S(1,0)}  Avg{S(0,1)}  std.dev{S(1,0)}  std.dev{S(0,1)}   Avg{E_classical}  std.dev{E_classical}   Avg.Filling" << endl;
                 }
                 int temp_count = count -
                                  (Parameters_.IterMax - (Gap_bw_sweeps * (MC_sweeps_used_for_Avg - 1) + MC_sweeps_used_for_Avg));
@@ -432,6 +432,21 @@ void MCEngine::RUN_MC()
                     Observables_.Total_Energy_Average(0.0, CurrE);
 
                     MFParams_.Calculate_Fields_Avg();
+
+
+                    double avg_filling=0.0;
+                    int temp_site_;
+                    for (int ix = 0; ix < lx_; ix++)
+                    {
+                        for (int iy = 0; iy < ly_; iy++)
+                        {
+                            temp_site_ = Coordinates_.Nc(ix, iy);
+                            avg_filling += (Observables_.local_density_Mean[temp_site_][0] +
+                                    Observables_.local_density_Mean[temp_site_][1])/((Confs_used * 1.0));
+                        }
+                    }
+
+
 
                     //double MC_steps_Avg_insitu = (1.0 + 1.0*(count - (Parameters_.IterMax - MC_steps_used_for_Avg)));
 
@@ -479,7 +494,10 @@ void MCEngine::RUN_MC()
 
                                       << setw(32) << Observables_.AVG_Total_Energy / (Confs_used * 1.0)
                                       << setw(16) << sqrt((Observables_.AVG_Total_Energy_sqr / (Confs_used * 1.0)) - ((Observables_.AVG_Total_Energy * Observables_.AVG_Total_Energy) / (Confs_used * Confs_used * 1.0)))
-                                      << endl;
+                                      <<
+                                    //--------------------------
+                        setw(16)<<avg_filling
+                                  <<endl;
                 }
             }
 
@@ -510,6 +528,7 @@ void MCEngine::RUN_MC()
             }
             File_Out_Local_Density << endl;
         }
+
 
         File_Out_Real_Space_Corr << "rx" << setw(15) << "ry" << setw(15) << "<SS(rx,ry)>" << setw(15) << "sd(SS(rx,ry))" << endl;
         // int temp_site_;

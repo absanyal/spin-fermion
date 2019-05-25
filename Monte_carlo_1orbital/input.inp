@@ -1,4 +1,4 @@
-Perform_ED=0
+Perform_ED=1
 Xsite=6
 Ysite=6
 TwistedBoundaryCond_mx=0
@@ -7,12 +7,13 @@ TBC_cellsX=32
 TBC_cellsY=32
 Fill=0.1
 RandomSeed=2002
-Fix_mu=0
-fixed_mu_value=1.0
+Fix_mu=1
+fixed_mu_value=-6.3
+Boltzman_constant=1.0
 
 RandomDisorderSeed=4
 Disorder_Strength=0.0
-J_Hund=1.0
+J_Hund=-16.0
 K=0.0
 
 
@@ -24,11 +25,11 @@ Temperature_min=100.0
 Temperature_max=5000.0
 dTemperature=200.0
 
-Temperature=5.0
+Temperature=0.02
 
 Metropolis_Algo=1
-MaxMCsweeps=6000
-Last_n_sweeps_for_measurement=100
+MaxMCsweeps=1000
+Last_n_sweeps_for_measurement=50
 Measurement_after_each_m_sweeps=5
 
 Cluster_lx=4

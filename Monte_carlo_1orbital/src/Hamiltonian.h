@@ -430,7 +430,7 @@ void Hamiltonian::InteractionsCreate()
         den = MFParams_.Local_density(Coordinates_.indx(i), Coordinates_.indy(i));
 
         Ham_(i, i) += HS_factor * (-0.25) * Parameters_.J_Hund * (den) - Parameters_.fix_mu * fix_mu_double;
-        Ham_(i + ns_, i + ns_) += HS_factor * (-0.25) * Parameters_.J_Hund * (den);
+        Ham_(i + ns_, i + ns_) += HS_factor * (-0.25) * Parameters_.J_Hund * (den) - Parameters_.fix_mu * fix_mu_double;
         Ham_(i, i) += Parameters_.J_Hund * (cos(ei)) * 0.5 * MFParams_.Moment_Size(Coordinates_.indx(i), Coordinates_.indy(i));
         Ham_(i + ns_, i + ns_) += Parameters_.J_Hund * (-cos(ei)) * 0.5 * MFParams_.Moment_Size(Coordinates_.indx(i), Coordinates_.indy(i));
         Ham_(i, i + ns_) += Parameters_.J_Hund * sin(ei) * complex<double>(cos(ai), -sin(ai)) * 0.5 * MFParams_.Moment_Size(Coordinates_.indx(i), Coordinates_.indy(i)); //S-
@@ -456,6 +456,16 @@ void Hamiltonian::InteractionsClusterCreate(int Center_site)
     double ei, ai, den;
     int a;
 
+    double fix_mu_double;
+    if (Parameters_.fix_mu)
+    {
+        fix_mu_double = 1.0;
+    }
+    else
+    {
+        fix_mu_double = 0.0;
+    }
+
     HamCluster_ = HTBCluster_;
 
     for (int i = 0; i < ns; i++)
@@ -469,8 +479,8 @@ void Hamiltonian::InteractionsClusterCreate(int Center_site)
         ai = MFParams_.ephi(x_pos, y_pos);
         den = MFParams_.Local_density(x_pos, y_pos);
 
-        HamCluster_(i, i) += HS_factor * (-0.25) * Parameters_.J_Hund * (den);
-        HamCluster_(i + ns, i + ns) += HS_factor * (-0.25) * Parameters_.J_Hund * (den);
+        HamCluster_(i, i) += HS_factor * (-0.25) * Parameters_.J_Hund * (den) - Parameters_.fix_mu * fix_mu_double;
+        HamCluster_(i + ns, i + ns) += HS_factor * (-0.25) * Parameters_.J_Hund * (den) - Parameters_.fix_mu * fix_mu_double;
         HamCluster_(i, i) += Parameters_.J_Hund * (cos(ei)) * 0.5 * MFParams_.Moment_Size(x_pos, y_pos);
         HamCluster_(i + ns, i + ns) += Parameters_.J_Hund * (-cos(ei)) * 0.5 * MFParams_.Moment_Size(x_pos, y_pos);
         HamCluster_(i, i + ns) += Parameters_.J_Hund * sin(ei) * complex<double>(cos(ai), -sin(ai)) * 0.5 * MFParams_.Moment_Size(x_pos, y_pos); //S-
