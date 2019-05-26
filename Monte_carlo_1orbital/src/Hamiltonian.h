@@ -326,7 +326,6 @@ double Hamiltonian::ClusterDensity()
     {
         n1 += 1.0 / (exp(Parameters_.beta * (eigsCluster_[j] - Parameters_.mus_Cluster * 1.0)) + 1.0);
     }
-    cout << Parameters_.beta << endl;
     return n1;
 } // ----------
 
